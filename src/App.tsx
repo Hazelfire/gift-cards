@@ -47,8 +47,9 @@ function App() {
         <SelectionPage value={chosenCharities} onSelectedCharities={setChosenCharities} onSubmit={() => {
           if(chosenCharities.length === 1){
             setPage("Confirmation")
-            setAllocations({[chosenCharities[0]]: 100});
-            sendAllocation(allocations).then(() => setIsSending(false)).catch(err => {
+            let newAllocations = {[chosenCharities[0]]: 100}
+            setAllocations(newAllocations);
+            sendAllocation(newAllocations).then(() => setIsSending(false)).catch(err => {
               setIsSending(false);
               setError(err);
             })
@@ -87,7 +88,9 @@ let sendAllocation = (allocations: Allocations) => {
   let data = {
     content: `You just got a submission of charity gift card ${cardId}!\n\n${Object.entries(allocations).map(([name, allocation]) => ` - ${name}: ${formatCurrency(allocation)}`).join("\n")}`
   }
-  return fetch("https://discord.com/api/webhooks/1050620734885613639/ZhaTPchuKjWN8uy4fmkoTcTrIpfUQT6OPQOrwulcZ9CEwCwXkNUvVduk2qFYbL6nyHJJ", {
+  let url = window.atob("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTA1MDYzNzk2OTk4MTE4NjA5MC9OZnZhaW1YeEtiWGMxRzh2T1R4S2tlMldySFp4Rk0taVVHclBRMTdvYmE4dHdPVGl2N1lJN3hPM0xaVDNiRXlFakhuTg==")
+  console.log(url)
+  return fetch(url, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
